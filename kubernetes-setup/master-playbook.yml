@@ -124,7 +124,7 @@
       EOF
       
   - name: Initialize the Kubernetes cluster using kubeadm
-    command: kubeadm init --config=ClusterConfiguration.yaml --cri-socket /run/containerd/containerd.sock
+    command: kubeadm init --config=ClusterConfiguration.yaml --cri-socket /run/containerd/containerd.sock 
 
   - name: Setup kubeconfig for vagrant user
     command: "{{ item }}"

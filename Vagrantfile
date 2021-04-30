@@ -4,9 +4,6 @@ N = 3
 Vagrant.configure("2") do |config|
     config.ssh.insert_key = false
 
-    config.vm.provider "virtualbox" do |v|
-        v.memory = 2048
-        v.cpus = 2
     end
       
     config.vm.define "c1-cp1" do |master|
@@ -18,6 +15,9 @@ Vagrant.configure("2") do |config|
             ansible.extra_vars = {
                 node_ip: "172.16.94.10",
             }
+        master.vm.provider "virtualbox" do |v|
+            v.memory = 2048
+            v.cpus = 2
         end
     end
 
@@ -31,6 +31,9 @@ Vagrant.configure("2") do |config|
                 ansible.extra_vars = {
                     node_ip: "172.16.94.#{i + 10}",
                 }
+            node.vm.provider "virtualbox" do |v|
+                v.memory = 1024
+                v.cpus = 2
             end
         end
     end
