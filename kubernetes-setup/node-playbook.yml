@@ -111,6 +111,18 @@
       daemon_reload: yes
       state: restarted
 
+  - name: Configure ClusterConfiguration.yaml file
+    shell: |
+      kubeadm config print init-defaults | tee ClusterConfiguration.yaml
+      sed -i 's/  advertiseAddress: 1.2.3.4/  advertiseAddress: 172.16.94.10/' ClusterConfiguration.yaml
+      sed -i 's/  criSocket: \/var\/run\/dockershim\.sock/  criSocket: \/run\/containerd\/containerd\.sock/' ClusterConfiguration.yaml
+      cat <<EOF | cat >> ClusterConfiguration.yaml
+      ---
+      apiVersion: kubelet.config.k8s.io/v1beta1
+      kind: KubeletConfiguration
+      cgroupDriver: systemd
+      EOF
+
   - name: Copy the join command to server location
     copy: src=join-command dest=/tmp/join-command.sh mode=0777
 
